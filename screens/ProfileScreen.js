@@ -1,5 +1,3 @@
-// screens/ProfileScreen.js
-
 import { View, Text, StyleSheet, Pressable, useWindowDimensions } from 'react-native';
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,10 +5,11 @@ import { COLORS, SPACING, RADII, FONTS } from '../theme';
 
 export default function ProfileScreen() {
   const [tema, setTema] = useState('light');
-  const aktifTema = COLORS[tema];
+  const [takip, setTakip] = useState(false);
 
+  const aktifTema = COLORS[tema];
   const { width } = useWindowDimensions();
-  const genisEkranMi = width > 500; 
+  const genisEkranMi = width > 500;
 
   const temaDegistir = () => {
     setTema(tema === 'light' ? 'dark' : 'light');
@@ -60,6 +59,18 @@ export default function ProfileScreen() {
           <Ionicons name="heart" size={24} color="#fff" />
           <Text style={styles.likeText}>Beğen</Text>
         </Pressable>
+
+        <Pressable
+          onPress={() => setTakip(!takip)}
+          style={[
+            styles.followButton,
+            { backgroundColor: takip ? '#4CC9F0' : '#4361EE' },
+          ]}
+        >
+          <Text style={styles.followText}>
+            {takip ? 'Takip Ediliyor' : 'Takip Et'}
+          </Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -80,12 +91,10 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: RADII.md,
     alignItems: 'center',
-
     shadowColor: '#000',
     shadowOpacity: 0.15,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
-
     elevation: 6,
   },
   name: {
@@ -112,5 +121,17 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
     fontSize: 16,
     marginLeft: SPACING.sm,
+  },
+  followButton: {
+    marginTop: SPACING.md,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.lg,
+    borderRadius: 50,
+    alignItems: 'center',
+  },
+  followText: {
+    color: '#fff',
+    fontFamily: FONTS.bold,
+    fontSize: 16,
   },
 });
