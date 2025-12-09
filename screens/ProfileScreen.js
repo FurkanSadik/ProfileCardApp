@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Pressable, useWindowDimensions } from 'react-native';
-import { useState } from 'react';
+import { View, Text, StyleSheet, Pressable, useWindowDimensions, Animated } from 'react-native';
+import { useState, useRef, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SPACING, RADII, FONTS } from '../theme';
 
@@ -12,8 +12,26 @@ export default function ProfileScreen() {
   const { width } = useWindowDimensions();
   const genisEkranMi = width > 500;
 
+  const animDeger = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(animDeger, {
+      toValue: genislet ? 1 : 0,
+      duration: 250,
+      useNativeDriver: false,
+    }).start();
+  }, [genislet, animDeger]);
+
   const temaDegistir = () => {
     setTema(tema === 'light' ? 'dark' : 'light');
+  };
+
+  const genisAlanStil = {
+    opacity: animDeger,
+    maxHeight: animDeger.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 220],
+    }),
   };
 
   return (
@@ -28,31 +46,36 @@ export default function ProfileScreen() {
 
       <Pressable
         onPress={() => setGenislet(!genislet)}
-        style={[
-          styles.card,
-          {
-            backgroundColor: aktifTema.card,
-            padding: genisEkranMi ? SPACING.xl : SPACING.lg,
-            width: genisEkranMi ? '60%' : '85%',
-          },
+        style={({ pressed }) => [
+          styles.cardPressable,
+          pressed && { transform: [{ scale: 0.98 }] },
         ]}
       >
-        <Ionicons
-          name="person-circle-outline"
-          size={genisEkranMi ? 100 : 80}
-          color={aktifTema.text}
-        />
+        <Animated.View
+          style={[
+            styles.card,
+            {
+              backgroundColor: aktifTema.card,
+              padding: genisEkranMi ? SPACING.xl : SPACING.lg,
+              width: genisEkranMi ? '60%' : '85%',
+            },
+          ]}
+        >
+          <Ionicons
+            name="person-circle-outline"
+            size={genisEkranMi ? 100 : 80}
+            color={aktifTema.text}
+          />
 
-        <Text style={[styles.name, { color: aktifTema.text }]}>
-          Ahmet Yılmaz
-        </Text>
+          <Text style={[styles.name, { color: aktifTema.text }]}>
+            Ahmet Yılmaz
+          </Text>
 
-        <Text style={[styles.role, { color: aktifTema.text }]}>
-          Mobil Geliştirici
-        </Text>
+          <Text style={[styles.role, { color: aktifTema.text }]}>
+            Mobil Geliştirici
+          </Text>
 
-        {genislet && (
-          <>
+          <Animated.View style={[styles.expandableArea, genisAlanStil]}>
             <View style={styles.locationContainer}>
               <Ionicons name="location-sharp" size={18} color={aktifTema.text} />
               <Text style={[styles.locationText, { color: aktifTema.text }]}>
@@ -86,8 +109,8 @@ export default function ProfileScreen() {
                 {takip ? 'Takip Ediliyor' : 'Takip Et'}
               </Text>
             </Pressable>
-          </>
-        )}
+          </Animated.View>
+        </Animated.View>
       </Pressable>
     </View>
   );
@@ -105,6 +128,9 @@ const styles = StyleSheet.create({
     right: 20,
     padding: SPACING.sm,
   },
+  cardPressable: {
+    borderRadius: RADII.md,
+  },
   card: {
     borderRadius: RADII.md,
     alignItems: 'center',
@@ -113,6 +139,11 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
     elevation: 6,
+  },
+  expandableArea: {
+    overflow: 'hidden',
+    width: '100%',
+    alignItems: 'center',
   },
   name: {
     fontFamily: FONTS.bold,
