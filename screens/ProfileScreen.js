@@ -49,6 +49,17 @@ export default function ProfileScreen() {
           Mobil Geliştirici
         </Text>
 
+        <View style={styles.locationContainer}>
+          <Ionicons name="location-sharp" size={18} color={aktifTema.text} />
+          <Text style={[styles.locationText, { color: aktifTema.text }]}>
+            İstanbul, Türkiye
+          </Text>
+        </View>
+
+        <Text style={[styles.bioText, { color: aktifTema.text }]}>
+          Mobil geliştirme ve tasarım ile ilgilenen bir yazılım meraklısı.
+        </Text>
+
         <Pressable
           style={({ pressed }) => [
             styles.likeButton,
@@ -107,6 +118,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: SPACING.sm,
     opacity: 0.7,
+  },
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: SPACING.sm,
+  },
+  locationText: {
+    fontFamily: FONTS.regular,
+    fontSize: 14,
+    marginLeft: 4,
+    opacity: 0.8,
+  },
+  bioText: {
+    fontFamily: FONTS.regular,
+    fontSize: 14,
+    marginTop: SPACING.md,
+    textAlign: 'center',
+    opacity: 0.8,
+    paddingHorizontal: 10,
   },
   likeButton: {
     flexDirection: 'row',
