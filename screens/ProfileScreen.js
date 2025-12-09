@@ -6,6 +6,7 @@ import { COLORS, SPACING, RADII, FONTS } from '../theme';
 export default function ProfileScreen() {
   const [tema, setTema] = useState('light');
   const [takip, setTakip] = useState(false);
+  const [genislet, setGenislet] = useState(false);
 
   const aktifTema = COLORS[tema];
   const { width } = useWindowDimensions();
@@ -25,7 +26,8 @@ export default function ProfileScreen() {
         />
       </Pressable>
 
-      <View
+      <Pressable
+        onPress={() => setGenislet(!genislet)}
         style={[
           styles.card,
           {
@@ -49,40 +51,44 @@ export default function ProfileScreen() {
           Mobil Geliştirici
         </Text>
 
-        <View style={styles.locationContainer}>
-          <Ionicons name="location-sharp" size={18} color={aktifTema.text} />
-          <Text style={[styles.locationText, { color: aktifTema.text }]}>
-            İstanbul, Türkiye
-          </Text>
-        </View>
+        {genislet && (
+          <>
+            <View style={styles.locationContainer}>
+              <Ionicons name="location-sharp" size={18} color={aktifTema.text} />
+              <Text style={[styles.locationText, { color: aktifTema.text }]}>
+                İstanbul, Türkiye
+              </Text>
+            </View>
 
-        <Text style={[styles.bioText, { color: aktifTema.text }]}>
-          Mobil geliştirme ve tasarım ile ilgilenen bir yazılım meraklısı.
-        </Text>
+            <Text style={[styles.bioText, { color: aktifTema.text }]}>
+              Mobil geliştirme ve tasarım ile ilgilenen bir yazılım meraklısı.
+            </Text>
 
-        <Pressable
-          style={({ pressed }) => [
-            styles.likeButton,
-            { backgroundColor: pressed ? '#e63946' : '#ff6b6b' },
-          ]}
-          onPress={() => console.log('Profil beğenildi!')}
-        >
-          <Ionicons name="heart" size={24} color="#fff" />
-          <Text style={styles.likeText}>Beğen</Text>
-        </Pressable>
+            <Pressable
+              style={({ pressed }) => [
+                styles.likeButton,
+                { backgroundColor: pressed ? '#e63946' : '#ff6b6b' },
+              ]}
+              onPress={() => console.log('Profil beğenildi!')}
+            >
+              <Ionicons name="heart" size={24} color="#fff" />
+              <Text style={styles.likeText}>Beğen</Text>
+            </Pressable>
 
-        <Pressable
-          onPress={() => setTakip(!takip)}
-          style={[
-            styles.followButton,
-            { backgroundColor: takip ? '#4CC9F0' : '#4361EE' },
-          ]}
-        >
-          <Text style={styles.followText}>
-            {takip ? 'Takip Ediliyor' : 'Takip Et'}
-          </Text>
-        </Pressable>
-      </View>
+            <Pressable
+              onPress={() => setTakip(!takip)}
+              style={[
+                styles.followButton,
+                { backgroundColor: takip ? '#4CC9F0' : '#4361EE' },
+              ]}
+            >
+              <Text style={styles.followText}>
+                {takip ? 'Takip Ediliyor' : 'Takip Et'}
+              </Text>
+            </Pressable>
+          </>
+        )}
+      </Pressable>
     </View>
   );
 }
