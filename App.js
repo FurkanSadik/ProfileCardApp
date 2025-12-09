@@ -1,5 +1,5 @@
 import { useFonts } from 'expo-font';
-import { View, Text, StyleSheet } from 'react-native';
+import ProfileScreen from './screens/ProfileScreen';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -8,24 +8,8 @@ export default function App() {
   });
 
   if (!fontsLoaded) {
-    return null; // Fontlar yüklenene kadar beklet
+    return null; // Fontlar yüklenene kadar bekle
   }
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Fontlar başarıyla yüklendi!</Text>
-    </View>
-  );
+  return <ProfileScreen />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontFamily: 'MontserratBold',
-    fontSize: 24,
-  },
-});
